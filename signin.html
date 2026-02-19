@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stackly – Sign Up</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  font-family:'Inter',sans-serif;
+  min-height:100vh;
+  background:radial-gradient(circle at top,#0b6ddf,#042a57);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+/* ===== CARD ===== */
+.container{
+  width:100%;
+  max-width:420px;
+  padding:36px;
+  border-radius:20px;
+  background:rgba(255,255,255,.15);
+  backdrop-filter:blur(18px);
+  box-shadow:0 30px 60px rgba(0,0,0,.35);
+  color:#fff;
+}
+
+/* ===== LOGO ===== */
+.logo{
+  text-align:center;
+  margin-bottom:22px;
+}
+.logo img{
+  height:38px;
+}
+
+/* ===== TEXT ===== */
+h2{
+  text-align:center;
+  margin-bottom:6px;
+}
+.subtext{
+  text-align:center;
+  font-size:13px;
+  opacity:.8;
+  margin-bottom:28px;
+}
+
+/* ===== FORM GRID ===== */
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;                 /* equal spacing */
+  grid-auto-rows:minmax(0, auto);
+}
+
+.field{
+  display:flex;
+  flex-direction:column;
+}
+
+.field label{
+  font-size:12px;
+  margin-bottom:6px;
+  opacity:.85;
+}
+
+.field input{
+  padding:12px;
+  border-radius:8px;
+  border:none;
+  outline:none;
+  font-size:13px;
+  width:100%;
+}
+
+/* ===== ERROR ===== */
+.error{
+  font-size:12px;
+  color:#ffd1d1;
+  margin-top:6px;
+  display:none;
+}
+
+/* ===== BUTTON ===== */
+.actions{
+  margin-top:30px;
+}
+.btn{
+  width:100%;
+  padding:13px;
+  border:none;
+  border-radius:8px;
+  background:#033b6d;
+  color:#fff;
+  font-size:15px;
+  cursor:pointer;
+}
+.btn:hover{background:#022b50}
+
+/* ===== FOOTER ===== */
+.footer{
+  text-align:center;
+  font-size:13px;
+  margin-top:20px;
+}
+.footer a{
+  color:#cce7ff;
+  text-decoration:none;
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:480px){
+  .grid{
+    grid-template-columns:1fr;   /* perfect stacking */
+    gap:18px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- Logo (redirect fixed) -->
+  <div class="logo">
+    <a href="index.html">
+      <img src="stacklylogo.webp" alt="Stackly">
+    </a>
+  </div>
+
+  <h2>Sign up</h2>
+  <div class="subtext"><h3>CORPORATE PRODUCT</h3></div>
+
+  <form id="signupForm">
+
+    <div class="grid">
+
+      <div class="field">
+        <label>Full Name</label>
+        <input type="text" id="name" required>
+        <div class="error" id="nameError">Only alphabets allowed</div>
+      </div>
+
+      <div class="field">
+        <label>Email</label>
+        <input type="email" id="email" required>
+        <div class="error" id="emailError">Enter a valid email</div>
+      </div>
+
+      <div class="field">
+        <label>Date of Birth</label>
+        <input type="date" id="dob" required>
+        <div class="error" id="dobError">Select a valid date</div>
+      </div>
+
+      <div class="field">
+        <label>Phone Number</label>
+        <input type="text" id="phone" maxlength="10" required>
+        <div class="error" id="phoneError">
+          Phone number must be exactly 10 digits
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="password" required>
+        <div class="error" id="passError">
+          Min 8 chars, 1 uppercase, 1 number & 1 special character
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Confirm Password</label>
+        <input type="password" id="confirmPassword" required>
+        <div class="error" id="confirmError">Passwords do not match</div>
+      </div>
+
+    </div>
+
+    <div class="actions">
+      <button type="submit" class="btn">Confirm</button>
+    </div>
+
+  </form>
+
+  <div class="footer">
+    Already have an account? <a href="login.html">Login</a>
+  </div>
+
+</div>
+
+<script>
+const nameField = document.getElementById("name");
+const phone = document.getElementById("phone");
+
+nameField.addEventListener("input",()=>{
+  nameField.value = nameField.value.replace(/[^A-Za-z\s]/g,"");
+});
+
+phone.addEventListener("input",()=>{
+  phone.value = phone.value.replace(/\D/g,"");
+  const err = document.getElementById("phoneError");
+  if(phone.value.length>0 && phone.value.length<10){
+    err.style.display="block";
+  }else{
+    err.style.display="none";
+  }
+});
+
+document.getElementById("signupForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  let valid=true;
+
+  const show=(id,cond)=>{
+    document.getElementById(id).style.display=cond?"block":"none";
+    if(cond) valid=false;
+  };
+
+  show("nameError",!/^[A-Za-z\s]+$/.test(nameField.value));
+  show("emailError",!email.checkValidity());
+  show("dobError",!dob.value);
+  show("phoneError",phone.value.length!==10);
+  show("passError",!/^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(password.value));
+  show("confirmError",password.value!==confirmPassword.value);
+
+  if(valid) window.location.href="404.html";
+});
+</script>
+
+</body>
+</html>
